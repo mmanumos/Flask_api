@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """ Flak app """
 from flask import Flask, request, make_response, redirect, render_template
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 todos = ["Levantarse temprano", "Hacer ejercicio", "Terminar tutorial"]
 
