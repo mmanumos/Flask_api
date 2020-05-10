@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Flak app """
 from flask import Flask, request, make_response, redirect
-from flask import render_template, session
+from flask import render_template, session, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, SubmitField
@@ -36,15 +36,25 @@ def index():
     session['user_ip'] = user_ip
     return response
 
-@app.route("/hello")
+@app.route("/hello", methods=['GET', 'POST'])
 def hello():
     user_ip = session.get('user_ip')
     login_form = LoginForm()
+    username = session.get('username')
     context = {
         "user_ip" : user_ip,
         "todos" : todos,
-        "login_form" : login_form
+        "login_form" : login_form,
+        "username" : username
     }
+
+    """ POST """
+    if login_form.validate_on_submit():
+        username = login_form.username.data
+        session['username'] = username
+        redirect(url_for('index'))
+
+
     """ The context is sent in this way to use only the name of keys in the template """
     return render_template("hello.html", **context)
 
