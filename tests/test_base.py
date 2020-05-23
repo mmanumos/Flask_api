@@ -30,12 +30,9 @@ class MainTest(TestCase):
         self.assert200(response)
     
     def test_hello_post(self):
-        fake_form = {
-            'username': 'fake',
-            'password': 'fake-password'
-        }
-        response = self.client.post(url_for('hello'), data=fake_form)
-        self.assertRedirects(response, url_for('index'))
+        """ Validate that post it's not will be allowed """
+        response = self.client.post(url_for('hello'))
+        self.assertTrue(response.status_code, 405)
 
     def test_auth_blueprint_exits(self):
         """ Validate if the blueprint is registered """
@@ -51,3 +48,12 @@ class MainTest(TestCase):
         """ Validate if is the correct template for the route """
         self.client.get(url_for('auth.login'))
         self.assertTemplateUsed('login.html')
+
+    def test_auth_login_post(self):
+        """ Validate if post is working for login """
+        fake_form = {
+            'username': 'fake',
+            'password': 'fake-password'
+        }
+        response = self.client.post(url_for('auth.login'), data=fake_form)
+        self.assertRedirects(response, url_for('index'))
