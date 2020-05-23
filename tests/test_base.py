@@ -36,4 +36,18 @@ class MainTest(TestCase):
         }
         response = self.client.post(url_for('hello'), data=fake_form)
         self.assertRedirects(response, url_for('index'))
-             
+
+    def test_auth_blueprint_exits(self):
+        """ Validate if the blueprint is registered """
+        self.assertIn('auth', self.app.blueprints)
+
+
+    def test_auth_login_get(self):
+        """ Validate if exists route into blueprint """
+        response = self.client.get(url_for('auth.login'))
+        self.assert200(response)
+
+    def test_auth_login_template(self):
+        """ Validate if is the correct template for the route """
+        self.client.get(url_for('auth.login'))
+        self.assertTemplateUsed('login.html')
