@@ -1,24 +1,20 @@
 #!/usr/bin/python3
 """ Flak app """
-from flask import Flask, request, make_response, redirect
+from flask import request, make_response, redirect
 from flask import render_template, session, url_for, flash
-from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
-from wtforms.fields import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
 import unittest
 
-app = Flask(__name__)
-bootstrap = Bootstrap(app)
-""" Config to generate a session with Flask """
-app.config['SECRET_KEY'] = 'SUPER SECRETO'
+""" The app is creted from __init__ """
+from app import create_app
+""" The login form is imported """
+from app.forms import LoginForm
+
+app = create_app()
+
 
 todos = ["Levantarse temprano", "Hacer ejercicio", "Terminar tutorial"]
 
-class LoginForm(FlaskForm):
-    username = StringField('User Name', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Send')
+
 
 @app.cli.command()
 def test():
